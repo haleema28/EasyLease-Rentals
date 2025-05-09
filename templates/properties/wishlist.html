@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}My Wishlist - EasyLease & Rentals{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">My Wishlist</h2>
+
+    {% if wishlist_items %}
+    <div class="row">
+        {% for item in wishlist_items %}
+        <div class="col-md-4 mb-4">
+            <div class="card property-card h-100">
+                {% if item.property.images.exists %}
+                <img src="{{ item.property.images.first.image.url }}" class="card-img-top property-image"
+                    alt="{{ item.property.title }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top property-image"
+                    alt="No Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.property.title }}</h5>
+                    <p class="card-text">
+                        <i class="bi bi-geo-alt"></i> {{ item.property.location }}<br>
+                        <i class="bi bi-currency-rupee"></i> {{ item.property.price }}/month<br>
+                        <i class="bi bi-rulers"></i> {{ item.property.area }} sq.ft
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">{{ item.property.get_property_type_display }}</span>
+                        <span class="badge bg-info">{{ item.property.get_listing_type_display }}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'property_detail' item.property.pk %}" class="btn btn-primary">View Details</a>
+                        <a href="{% url 'remove_from_wishlist' item.property.pk %}" class="btn btn-outline-danger">
+                            <i class="bi bi-heart-fill"></i> Remove from Wishlist
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Your wishlist is empty. Start adding properties by clicking the heart icon on
+        any property listing.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

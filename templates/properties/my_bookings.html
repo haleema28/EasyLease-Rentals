@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings - EasyLease & Rentals{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">My Bookings</h2>
+
+    {% if bookings %}
+    <div class="row">
+        {% for booking in bookings %}
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        {% if booking.property.images.exists %}
+                        <img src="{{ booking.property.images.first.image.url }}" class="img-fluid rounded-start h-100"
+                            style="object-fit: cover;" alt="{{ booking.property.title }}">
+                        {% else %}
+                        <img src="https://via.placeholder.com/300x400?text=No+Image"
+                            class="img-fluid rounded-start h-100" alt="No Image">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ booking.property.title }}</h5>
+                            <p class="card-text">
+                                <i class="bi bi-calendar-check"></i> Booking Date: {{ booking.booking_date|date:"d M Y"
+                                }}<br>
+                                <i class="bi bi-calendar-event"></i> Move-in Date: {{ booking.move_in_date|date:"d M Y"
+                                }}<br>
+                                <i class="bi bi-currency-rupee"></i> Monthly Rent: ₹{{ booking.property.price }}<br>
+                                <i class="bi bi-shield-check"></i> Security Deposit: ₹{{
+                                booking.property.security_deposit }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span
+                                    class="badge {% if booking.status == 'CONFIRMED' %}bg-success{% elif booking.status == 'PENDING' %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                                <a href="{% url 'property_detail' booking.property.pk %}"
+                                    class="btn btn-outline-primary btn-sm">
+                                    View Property
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> You haven't made any bookings yet. Start exploring our properties!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

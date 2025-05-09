@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Properties - EasyLease & Rentals{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Search Filters -->
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Search Filters</h5>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{% url 'property_list' %}">
+                    <div class="mb-3">
+                        <label for="property_type" class="form-label">Property Type</label>
+                        {{ search_form.property_type }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="listing_type" class="form-label">Listing Type</label>
+                        {{ search_form.listing_type }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="min_price" class="form-label">Min Price</label>
+                        {{ search_form.min_price }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="max_price" class="form-label">Max Price</label>
+                        {{ search_form.max_price }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property List -->
+    <div class="col-md-9">
+        <h2 class="mb-4">Available Properties</h2>
+        <div class="row">
+            {% for property in properties %}
+            <div class="col-md-6 mb-4">
+                <div class="card property-card h-100">
+                    {% if property.images.exists %}
+                    <img src="{{ property.images.first.image.url }}" class="card-img-top property-image"
+                        alt="{{ property.title }}">
+                    {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top property-image"
+                        alt="No Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ property.title }}</h5>
+                        <p class="card-text text-muted">
+                            <i class="bi bi-geo-alt"></i> {{ property.location }}
+                        </p>
+                        <p class="card-text">
+                            <span class="badge bg-primary">{{ property.get_property_type_display }}</span>
+                            <span class="badge bg-secondary">{{ property.get_listing_type_display }}</span>
+                        </p>
+                        <p class="card-text">
+                            <strong>₹{{ property.price }}/month</strong>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <i class="bi bi-rulers"></i> {{ property.area }} sq.ft
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-primary w-100">View
+                            Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No properties found matching your criteria.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

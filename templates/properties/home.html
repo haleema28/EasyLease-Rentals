@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - EasyLease & Rentals{% endblock %}
+
+{% block content %}
+<div class="hero-section text-white text-center py-5 mb-5"
+    style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; height: 500px; display: flex; align-items: center;">
+    <div class="container">
+        <h1 class="display-4 mb-4">Find Your Perfect Home</h1>
+        <p class="lead mb-4">Discover a wide range of properties for rent and lease</p>
+        <a href="{% url 'property_list' %}" class="btn btn-primary btn-lg">Browse Properties</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center mb-5">Featured Properties</h2>
+    <div class="row">
+        {% for property in featured_properties %}
+        <div class="col-md-4 mb-4">
+            <div class="card property-card h-100">
+                {% if property.images.exists %}
+                <img src="{{ property.images.first.image.url }}" class="card-img-top property-image"
+                    alt="{{ property.title }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top property-image"
+                    alt="No Image">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ property.title }}</h5>
+                    <p class="card-text text-muted">
+                        <i class="bi bi-geo-alt"></i> {{ property.location }}
+                    </p>
+                    <p class="card-text">
+                        <span class="badge bg-primary">{{ property.get_property_type_display }}</span>
+                        <span class="badge bg-secondary">{{ property.get_listing_type_display }}</span>
+                    </p>
+                    <p class="card-text">
+                        <strong>₹{{ property.price }}/month</strong>
+                    </p>
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{% url 'property_detail' property.pk %}" class="btn btn-outline-primary w-100">View
+                        Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No properties available at the moment.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="welcome-section bg-light py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <i class="bi bi-house-door feature-icon"></i>
+                <h3>Wide Range of Properties</h3>
+                <p>Choose from 1BHK to 3BHK properties in prime locations.</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <i class="bi bi-shield-check feature-icon"></i>
+                <h3>Secure Booking</h3>
+                <p>Safe and secure booking process with verified properties.</p>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <i class="bi bi-heart feature-icon"></i>
+                <h3>Save Favorites</h3>
+                <p>Create your wishlist and save your favorite properties.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

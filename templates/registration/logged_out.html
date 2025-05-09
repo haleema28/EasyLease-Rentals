@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">You have been logged out</h2>
+                    <p class="card-text">Thank you for using EasyLease & Rentals.</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary">Log in again</a>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Return to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
