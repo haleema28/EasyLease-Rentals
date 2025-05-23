@@ -56,6 +56,11 @@ python manage.py runserver
 3. Browse properties at `http://localhost:8000`
 4. Register an account to book properties and manage your wishlist
 
+## Demo Credentials
+
+-username: root
+-password: root123456789
+
 ## Project Structure
 
 - `properties/` - Main app directory
